@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify({ success: true }), { status: 200 })
   } catch (err) {
     console.error("Error saving contact:", err)
-    return new Response(JSON.stringify({ success: false, error: err }), {
+    return new Response(JSON.stringify({ success: false, error: String(err) }), {
       status: 500,
     })
   }
