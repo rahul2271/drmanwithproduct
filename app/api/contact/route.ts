@@ -32,10 +32,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Decide which table to use
+    // ✅ Use treatment as subject if booking form
+    const finalSubject = form_type === "booking" ? treatment : subject;
+
+    // ✅ Select correct table
     const tableName = form_type === "booking" ? "appointment_form" : "contact_form";
 
-    // Insert into Supabase
+    // ✅ Insert unified data
     const { data, error } = await supabase
       .from(tableName)
       .insert([
@@ -43,7 +46,7 @@ export async function POST(req: Request) {
           name,
           email,
           phone,
-          subject,
+          subject: finalSubject, // unified field
           message,
           form_type,
           preferred_date,
