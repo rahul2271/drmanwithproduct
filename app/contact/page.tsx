@@ -429,7 +429,6 @@
 
 "use client"
 
-import type React from "react"
 import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -444,15 +443,19 @@ export default function ContactPage() {
     e.preventDefault()
     setLoading(true)
 
-    const formData = new FormData(e.currentTarget)
+    const form = e.currentTarget
+    const formData = new FormData(form)
     const data: Record<string, any> = {}
 
     formData.forEach((value, key) => {
       data[key] = value
     })
 
-    // identify which form is active
+    // Identify which form is active
     data.form_type = activeTab === "contact" ? "contact" : "booking"
+
+    // Log data for debugging (remove in production)
+    console.log("🟢 Sending data:", data)
 
     try {
       const res = await fetch("/api/contact", {
@@ -461,17 +464,20 @@ export default function ContactPage() {
         body: JSON.stringify(data),
       })
 
+      const result = await res.json()
       setLoading(false)
 
       if (res.ok) {
+        console.log("✅ Form submitted successfully:", result)
         setSubmitted(true)
-        e.currentTarget.reset()
+        form.reset() // ✅ reset only the submitted form
         setTimeout(() => setSubmitted(false), 3000)
       } else {
-        alert("Something went wrong. Please try again.")
+        console.error("❌ Server error:", result)
+        alert(result?.error || "Something went wrong. Please try again.")
       }
     } catch (err) {
-      console.error(err)
+      console.error("🔥 Network error:", err)
       alert("Error connecting to the server.")
       setLoading(false)
     }
@@ -544,6 +550,7 @@ export default function ContactPage() {
               <Card className="p-8 border border-border bg-card">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Send us a Message</h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  <input type="hidden" name="form_type" value="contact" />
                   <div>
                     <label className="block text-sm font-medium mb-2">Full Name *</label>
                     <input
@@ -633,6 +640,7 @@ export default function ContactPage() {
               <Card className="p-8 border border-border bg-card">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Book an Appointment</h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  <input type="hidden" name="form_type" value="booking" />
                   <div>
                     <label className="block text-sm font-medium mb-2">Full Name *</label>
                     <input
@@ -668,13 +676,13 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Skin Condition *</label>
+                    <label className="block text-sm font-medium mb-2">Skin Condition / Treatment *</label>
                     <select
-                      name="subject"
+                      name="treatment"
                       required
                       className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary"
                     >
-                      <option value="">Select condition</option>
+                      <option value="">Select treatment</option>
                       <option value="psoriasis">Psoriasis</option>
                       <option value="eczema">Eczema & Dermatitis</option>
                       <option value="acne">Acne & Pigmentation</option>
