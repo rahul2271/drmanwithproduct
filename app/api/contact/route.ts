@@ -16,17 +16,41 @@ export async function POST(req: Request) {
     const body = await req.json();
     console.log("📩 Request body:", body);
 
-    const { name, email, phone, subject, message, form_type } = body;
+    const {
+      name,
+      email,
+      phone,
+      subject,
+      message,
+      form_type,
+      preferred_date,
+      preferred_time,
+      treatment,
+    } = body;
 
     if (!name || !email || !phone) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    // Decide which table to use
     const tableName = form_type === "booking" ? "appointment_form" : "contact_form";
 
+    // Insert into Supabase
     const { data, error } = await supabase
       .from(tableName)
-      .insert([{ name, email, phone, subject, message, form_type }])
+      .insert([
+        {
+          name,
+          email,
+          phone,
+          subject,
+          message,
+          form_type,
+          preferred_date,
+          preferred_time,
+          treatment,
+        },
+      ])
       .select();
 
     if (error) {
