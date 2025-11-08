@@ -1,46 +1,38 @@
-import { supabase } from "@/lib/supabaseClient"
+import { NextResponse } from "next/server"
+import { createClient } from "@supabase/supabase-js"
+
+// Securely access environment variables
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 export async function POST(req: Request) {
   try {
-    const data = await req.json()
+    const body = await req.json()
 
-    if (data.type === "contact") {
-      const { name, email, phone, subject, message } = data
-      const { error } = await supabase.from("contacts").insert([
-        { name, email, phone, subject, message },
-      ])
-      if (error) throw error
-    } else if (data.type === "booking") {
-      const {
-        name,
-        email,
-        phone,
-        condition,
-        preferredDate,
-        preferredTime,
-        consultationType,
-        notes,
-      } = data
-      const { error } = await supabase.from("bookings").insert([
+    const { data, error } = await supabase
+      .from("contact_form") // 👈 your Supabase table name
+      .insert([
         {
-          name,
-          email,
-          phone,
-          condition,
-          preferred_date: preferredDate,
-          preferred_time: preferredTime,
-          consultation_type: consultationType,
-          notes,
+          name: body.name || "",
+          email: body.email || "",
+          phone: body.phone || "",
+          subject: body.subject || "",
+          message: body.message || "",
+          form_type: body.type || "contact",
+          created_at: new Date().toISOString(),
         },
       ])
-      if (error) throw error
+
+    if (error) {
+      console.error("Supabase insert error:", error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    return new Response(JSON.stringify({ success: true }), { status: 200 })
+    return NextResponse.json({ success: true, data })
   } catch (err) {
-    console.error("Error saving contact:", err)
-    return new Response(JSON.stringify({ success: false, error: String(err) }), {
-      status: 500,
-    })
+    console.error("Server error:", err)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }
