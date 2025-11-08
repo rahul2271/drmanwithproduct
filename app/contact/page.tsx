@@ -12,21 +12,55 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault()
+  //   setLoading(true)
+
+  //   // Simulate form submission
+  //   await new Promise((resolve) => setTimeout(resolve, 1500))
+
+  //   setSubmitted(true)
+  //   setLoading(false)
+
+  //   setTimeout(() => {
+  //     setSubmitted(false)
+  //     ;(e.target as HTMLFormElement).reset()
+  //   }, 3000)
+  // }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
+  e.preventDefault()
+  setLoading(true)
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+  const formData = new FormData(e.currentTarget)
+  const data: any = {}
 
+  formData.forEach((value, key) => {
+    data[key] = value
+  })
+
+  // identify which form is active
+  data.type = activeTab === "contact" ? "contact" : "booking"
+
+  const res = await fetch("/api/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+
+  setLoading(false)
+
+  if (res.ok) {
     setSubmitted(true)
-    setLoading(false)
-
     setTimeout(() => {
       setSubmitted(false)
-      ;(e.target as HTMLFormElement).reset()
+      e.currentTarget.reset()
     }, 3000)
+  } else {
+    alert("Something went wrong. Please try again.")
   }
+}
+
 
   return (
     <div className="min-h-screen">
