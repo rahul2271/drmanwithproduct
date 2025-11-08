@@ -9,6 +9,34 @@ const supabase = createClient(
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
+    console.log("📩 Incoming data:", req.body);
+
+    const { name, email, phone, subject, message, form_type } = req.body;
+
+    try {
+      const { data, error } = await supabase
+        .from("contact_form")
+        .insert([{ name, email, phone, subject, message, form_type }]);
+
+      if (error) {
+        console.error("❌ Supabase error:", error);
+        return res.status(500).json({ error: error.message });
+      }
+
+      console.log("✅ Data inserted:", data);
+      return res.status(200).json({ success: true, data });
+    } catch (err) {
+      console.error("🔥 API error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+  } else {
+    res.status(405).json({ error: "Method not allowed" });
+  }
+}
+
+
+export default async function handler(req, res) {
+  if (req.method === "POST") {
     const { name, email, phone, subject, message, form_type } = req.body;
 
     const { data, error } = await supabase
