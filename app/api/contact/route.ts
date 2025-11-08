@@ -7,43 +7,37 @@ export async function POST(req: Request) {
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      console.error("❌ Missing Supabase environment variables");
-      return NextResponse.json(
-        { error: "Missing Supabase credentials" },
-        { status: 500 }
-      );
+      console.error("❌ Missing Supabase credentials");
+      return NextResponse.json({ error: "Missing Supabase credentials" }, { status: 500 });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const body = await req.json();
-    console.log("📩 Received body:", body);
+    console.log("📩 Request body:", body);
 
-    const { name, email, phone, subject, message, form_type, preferred_date, preferred_time, treatment } = body;
+    const { name, email, phone, subject, message, form_type } = body;
 
-    const table =
-      form_type === "booking" || form_type === "appointment"
-        ? "appointment_form"
-        : "contact_form";
+    if (!name || !email || !phone) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
 
-    const insertData =
-      table === "appointment_form"
-        ? { name, email, phone, subject, preferred_date, preferred_time, treatment, message, form_type }
-        : { name, email, phone, subject, message, form_type };
+    const tableName = form_type === "booking" ? "appointment_form" : "contact_form";
 
-    console.log(`🧾 Inserting into ${table}:`, insertData);
-
-    const { data, error } = await supabase.from(table).insert([insertData]).select();
+    const { data, error } = await supabase
+      .from(tableName)
+      .insert([{ name, email, phone, subject, message, form_type }])
+      .select();
 
     if (error) {
-      console.error("❌ Supabase error:", error.message);
+      console.error("❌ Supabase insert error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    console.log(`✅ Insert successful into ${table}:`, data);
-    return NextResponse.json({ success: true, data });
+    console.log("✅ Data inserted successfully:", data);
+    return NextResponse.json({ success: true, data }, { status: 200 });
   } catch (err: any) {
-    console.error("🔥 API error:", err);
-    return NextResponse.json({ error: err.message || "Unknown error" }, { status: 500 });
+    console.error("🔥 Server error:", err);
+    return NextResponse.json({ error: err.message || "Internal error" }, { status: 500 });
   }
 }
