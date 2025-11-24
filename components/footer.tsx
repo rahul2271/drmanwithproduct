@@ -146,14 +146,26 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 border-t border-border">
             <p className="text-sm text-muted-foreground">© 2025 Dr. Manpreet Ayurveda. All rights reserved.</p>
             <div className="flex gap-4">
-              <Link href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+              <Link href="/privacy-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors">
-                Terms of Service
+              <Link href="/terms-and-conditions" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Terms & Conditions
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors">
-                Disclaimer
+              <Link href="/medical-disclaimer" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Medical Disclaimer
+              </Link>
+              <Link href="/refund-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Refund Policy
+              </Link>
+              <Link href="/testimonial-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Testimonial Policy
+              </Link>
+              <Link href="/cookie-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Cookie Policy
+              </Link>
+              <Link href="/shipping-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Shipping & Delivery Policy
               </Link>
             </div>
           </div>
