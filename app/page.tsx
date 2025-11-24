@@ -161,6 +161,36 @@ export default function Home() {
       a: "The consultation includes detailed skin assessment, medical history review, Dosha analysis, and a personalized treatment plan tailored to your needs.",
     },
   ]
+const treatmentCasess = {
+  psoriasis: {
+    title: "Psoriasis Treatment",
+    description: "Detailed case of…",
+    results: "80% better",
+    timeline: "3 months",
+    patient: "Patient improved significantly…",
+    improvement: "80%",
+    image: "/psoriasisba.png",
+  },
+  eczema: {
+    title: "Eczema Treatment",
+    description: "Severe eczema case…",
+    results: "90% relief",
+    timeline: "2 months",
+    patient: "Patient responded well…",
+    improvement: "90%",
+    image: "/eczemeba.webp",
+  },
+ 
+  acne: {
+      title: "Acne & Scarring",
+      description: "Severe cystic acne with persistent scarring",
+      results: "Clear skin achieved, 70% scar reduction",
+      timeline: "3-4 months for clear skin",
+      patient: "Arjun Patel, 28 - Bangalore",
+      improvement: "90%",
+      image: "/acneba.webp",
+    },
+};
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -426,11 +456,11 @@ export default function Home() {
                 </div>
                 <div className="relative rounded-xl overflow-hidden h-80 animate-slide-in-right group">
                   <Image
-                    src={`/skin-treatment-result-before-after-.jpg?height=400&width=400`}
-                    alt="Treatment results"
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
+  src={`${treatmentCasess[activeTab].image}?height=400&width=400`}
+  alt="Treatment results"
+  fill
+  className="object-cover group-hover:scale-110 transition-transform duration-500"
+/>
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent group-hover:from-primary/60 transition-all duration-300"></div>
                   <div className="absolute bottom-4 right-4 bg-accent/90 text-accent-foreground px-4 py-2 rounded-lg font-bold">
                     {treatmentCases[activeTab as keyof typeof treatmentCases].improvement} Improvement
@@ -466,7 +496,7 @@ export default function Home() {
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/0 group-hover:from-primary/10 to-accent/0 group-hover:to-accent/10 transition-all duration-300"></div>
                     <div className="relative z-10">
                       <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                        <Icon className="w-8 h-8 text-primary group-hover:rotate-12 transition-transform" />
+                        <Icon stopColor="" className="w-8 h-8 text-primary group-hover:rotate-12 transition-transform" />
                       </div>
                       <h3 className="text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                         {treatment.title}

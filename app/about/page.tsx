@@ -107,12 +107,12 @@ export default function AboutPage() {
             {/* Image */}
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-500"></div>
-              <div className="relative h-96 lg:h-full min-h-96 rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative h-[500px] lg:h-full min-h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/ayurvedic-doctor-consultation-patient-healing.jpg"
+                  src="/about.jpg"
                   alt="Dr. Manpreet Singh"
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="object-cover object-[center_40%] group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
             </div>
