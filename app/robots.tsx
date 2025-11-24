@@ -1,12 +1,13 @@
-import type { MetadataRoute } from "next";
+// app/robots.js
+import { MetadataRoute } from "next";
 
-export default function robots(): MetadataRoute.Robots {
+export default function robots() {
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/admin/", "/private/", "/_next/"],
+        disallow: ["/cart", "/checkout", "/order", "/account", "/thank-you", "/api/", "/admin/", "/_next/"],
       },
     ],
     sitemap: "https://www.drmanpreetayurveda.com/sitemap.xml",
