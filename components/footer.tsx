@@ -97,6 +97,48 @@ export default function Footer() {
             </ul>
           </div>
 
+          <div>
+            <h3 className="font-semibold text-foreground mb-4">Our Policies</h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/privacy-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Privacy Policy
+              </Link>
+              </li>
+              <li>
+              <Link href="/terms-and-conditions" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Terms & Conditions
+              </Link>
+              </li>
+              <li>
+              <Link href="/medical-disclaimer" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Medical Disclaimer
+              </Link>
+              </li>
+              <li>
+              <Link href="/refund-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Refund Policy
+              </Link>
+              </li>
+              <li>
+              <Link href="/testimonial-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Testimonial Policy
+              </Link>
+              </li>
+              <li>
+              <Link href="/cookie-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Cookie Policy
+              </Link>
+              </li>
+              <li>
+              <Link href="/shipping-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                Shipping & Delivery Policy
+              </Link>
+
+              </li>
+            </ul>
+          </div>
+
           {/* Contact Info */}
           <div>
             <h3 className="font-semibold text-foreground mb-4">Contact</h3>
@@ -145,29 +187,7 @@ export default function Footer() {
           {/* Bottom Footer */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 border-t border-border">
             <p className="text-sm text-muted-foreground">© 2025 Dr. Manpreet Ayurveda. All rights reserved.</p>
-            <div className="flex gap-4">
-              <Link href="/privacy-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms-and-conditions" className="text-muted-foreground hover:text-primary text-sm transition-colors">
-                Terms & Conditions
-              </Link>
-              <Link href="/medical-disclaimer" className="text-muted-foreground hover:text-primary text-sm transition-colors">
-                Medical Disclaimer
-              </Link>
-              <Link href="/refund-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
-                Refund Policy
-              </Link>
-              <Link href="/testimonial-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
-                Testimonial Policy
-              </Link>
-              <Link href="/cookie-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
-                Cookie Policy
-              </Link>
-              <Link href="/shipping-policy" className="text-muted-foreground hover:text-primary text-sm transition-colors">
-                Shipping & Delivery Policy
-              </Link>
-            </div>
+            
           </div>
         </div>
       </div>
