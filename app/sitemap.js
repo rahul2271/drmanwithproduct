@@ -1,118 +1,50 @@
-import { globSync } from "glob";
+import { MetadataRoute } from "next";
 
 export default async function sitemap() {
   const baseUrl = "https://www.drmanpreetayurveda.com";
 
-  // ------------------ STATIC ROUTES ------------------
-  const pages = globSync("app/**/page.{js,jsx,ts,tsx}");
+  // ------ STATIC PAGES ------
+  const staticPages = [
+    "",
+    "/about",
+    "/contact",
+    "/products",
+    "/blogs",
+    "/treatments",
+  ].map((path) => ({
+    url: `${baseUrl}${path}`,
+    lastModified: new Date(),
+  }));
 
-  const staticRoutes = pages
-    .map((page) => {
-      const route = page
-        .replace(/^app/, "")
-        .replace(/\/page\.(js|jsx|ts|tsx)$/, "");
-
-      if (
-        route.includes("/api") ||
-        route.includes("/admin") ||
-        route.includes("/private") ||
-        route.includes("/cart") ||
-        route.includes("/checkout") ||
-        route.includes("/order")
-      ) {
-        return null;
-      }
-
-      return {
-        url: `${baseUrl}${route === "" ? "/" : route}`,
+  // ------ GET BLOGS DYNAMICALLY ------
+  let blogs = [];
+  try {
+    const res = await fetch(`${baseUrl}/api/blogs`, { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      blogs = data.map((b) => ({
+        url: `${baseUrl}/blog/${b.slug}`,
         lastModified: new Date(),
-        changeFrequency: "weekly",
-        priority: route === "" ? 1.0 : 0.7,
-      };
-    })
-    .filter(Boolean);
-
-  // Safe fetch
-  async function safeJson(url) {
-    try {
-      const res = await fetch(url, { next: { revalidate: 60 } });
-      return res.ok ? res.json() : null;
-    } catch {
-      return null;
+      }));
     }
+  } catch (e) {
+    console.error("Blog fetch failed:", e);
   }
 
-  // ------------------ BLOGS ------------------
-  const blogs = await safeJson(`${baseUrl}/api/blogs`);
-  let blogRoutes = [];
-
-  if (Array.isArray(blogs)) {
-    blogRoutes = blogs.map((post) => ({
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: new Date(post.updatedAt || Date.now()),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    }));
-
-    blogRoutes.push({
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    });
+  // ------ GET PRODUCTS DYNAMICALLY ------
+  let products = [];
+  try {
+    const res = await fetch(`${baseUrl}/api/products`, { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      products = data.map((p) => ({
+        url: `${baseUrl}/product/${p.slug}`,
+        lastModified: new Date(),
+      }));
+    }
+  } catch (e) {
+    console.error("Product fetch failed:", e);
   }
 
-  // ------------------ PRODUCTS ------------------
-  const products = await safeJson(`${baseUrl}/api/products`);
-  let productRoutes = [];
-
-  if (Array.isArray(products)) {
-    productRoutes = products.map((p) => ({
-      url: `${baseUrl}/products/${p.slug}`,
-      lastModified: new Date(p.updatedAt || Date.now()),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    }));
-
-    productRoutes.push({
-      url: `${baseUrl}/products`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    });
-  }
-
-  // ------------------ TREATMENTS ------------------
-  const treatments = await safeJson(`${baseUrl}/api/treatments`);
-  let treatmentRoutes = [];
-
-  if (Array.isArray(treatments)) {
-    treatmentRoutes = treatments.map((t) => ({
-      url: `${baseUrl}/treatments/${t.slug}`,
-      lastModified: new Date(t.updatedAt || Date.now()),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    }));
-  }
-
-  // ------------------ DOCTORS ------------------
-  const doctors = await safeJson(`${baseUrl}/api/doctors`);
-  let doctorRoutes = [];
-
-  if (Array.isArray(doctors)) {
-    doctorRoutes = doctors.map((d) => ({
-      url: `${baseUrl}/doctor/${d.slug}`,
-      lastModified: new Date(d.updatedAt || Date.now()),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    }));
-  }
-
-  return [
-    ...staticRoutes,
-    ...blogRoutes,
-    ...productRoutes,
-    ...treatmentRoutes,
-    ...doctorRoutes,
-  ];
+  return [...staticPages, ...blogs, ...products];
 }
