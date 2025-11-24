@@ -33,7 +33,7 @@ export default function Navigation() {
         { label: "Ayurvedic Products", href: "/products" }, // Added products link to navigation
       ],
     },
-    { label: "Blog", href: "/blog" },
+    { label: "Blog", href: "/blogs" },
     { label: "AI Consultation", href: "/ai-consultation" },
     { label: "Contact", href: "/contact" },
   ]
