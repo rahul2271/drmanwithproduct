@@ -72,7 +72,7 @@ export default function BlogPage() {
       {blogs.length > 0 && (
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
           <div className="max-w-7xl mx-auto">
-            <Link href={`/blog/${blogs[0].slug}`}>
+            <Link href={`/blogs/${blogs[0].slug}`}>
               <Card className="overflow-hidden border border-border bg-card hover:shadow-xl transition-shadow cursor-pointer">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                   <div className="relative h-64 md:h-96">
