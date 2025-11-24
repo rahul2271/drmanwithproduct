@@ -12,7 +12,6 @@ export default async function sitemap() {
         .replace(/^app/, "")
         .replace(/\/page\.(js|jsx|ts|tsx)$/, "");
 
-      // skip unwanted folders
       if (
         route.includes("/api") ||
         route.includes("/admin") ||
@@ -49,14 +48,14 @@ export default async function sitemap() {
 
   if (Array.isArray(blogs)) {
     blogRoutes = blogs.map((post) => ({
-      url: `${baseUrl}/blogs/${post.slug}`,
+      url: `${baseUrl}/blog/${post.slug}`,
       lastModified: new Date(post.updatedAt || Date.now()),
       changeFrequency: "weekly",
       priority: 0.8,
     }));
 
     blogRoutes.push({
-      url: `${baseUrl}/blogs`,
+      url: `${baseUrl}/blog`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
